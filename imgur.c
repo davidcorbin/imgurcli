@@ -6,7 +6,7 @@
 #include <curl/curl.h>
 
 
-#define VERSION   "1.0"
+#define VERSION   "1.1"
 #define KEY       "b3625162d3418ac51a9ee805b1840452"
 
 char *response;
@@ -25,7 +25,7 @@ void callback(void *buffer, size_t size, size_t nmemb, void *userp) {
     response = buffer;
 }
 
-
+/* Show usage commands */
 void arguments() {
     printf("\nImgurCLI - Correctly Installed \nCreated By David Corbin \nVersion: %s \n\nUsage:\n   imgur [path to image]\n\nView the source at https://www.github.com/daconex/imgurcli\n\n", VERSION);
     
@@ -86,10 +86,13 @@ int main (int argc, char *argv[]) {
         /* Perform the request */
         res = curl_easy_perform(curl);
 
+        /* Unescape json */
         removechar(response, "\\");
 
+        /* Get pointer to the beginning of the direct link */
         char *link = strstr(response, "http://i.imgur");
 
+        /* Get distance from link to end of link */
         int count = 0;
         while (count < 10000) {
             if (link[count] == '\"') {
@@ -108,9 +111,10 @@ int main (int argc, char *argv[]) {
 
 
         /* Check for errors */
-        /*if(res != CURLE_OK)
-            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));*/
+        if(res != CURLE_OK)
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
 
+        free(real);
         curl_easy_cleanup(curl);
         curl_formfree(formpost);
     }
