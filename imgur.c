@@ -2,12 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <curl/curl.h>
 
 
-#define VERSION   1.0
+#define VERSION   "1.0"
 #define KEY       "b3625162d3418ac51a9ee805b1840452"
 
 char *response;
@@ -28,7 +27,8 @@ void callback(void *buffer, size_t size, size_t nmemb, void *userp) {
 
 
 void arguments() {
-    printf("Arguments\n");
+    printf("\nImgurCLI - Correctly Installed \nCreated By David Corbin \nVersion: %s \n\nUsage:\n   imgur [path to image]\n\nView the source at https://www.github.com/daconex/imgurcli\n\n", VERSION);
+    
     exit(1);
 }
 
