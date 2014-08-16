@@ -10,6 +10,7 @@
 #define KEY       "b3625162d3418ac51a9ee805b1840452"
 
 char *response;
+int error = 0;
 
 void removechar(char* str, char *c) {
     char *pr = str, *pw = str;
@@ -33,6 +34,7 @@ void arguments() {
 }
 
 int main (int argc, char *argv[]) {
+printf("a");
     struct stat buf;
 
     /* Get HOME directory */
@@ -49,14 +51,18 @@ int main (int argc, char *argv[]) {
     if (argc == 1) 
         arguments();
 
-    if (access(argv[1], R_OK) != 0) {
+
+    if (strcmp(argv[1], "version") == 0) {
+        arguments();
+    }
+    else if (access(argv[1], R_OK) != 0) {
         printf("File '%s' not found!\n", argv[1]);
         exit(1);
     }
 
     CURL *curl;
     CURLcode res;
-    FILE *output = fopen(directory, "wb");
+    //FILE *output = fopen(directory, "wb");
 
     struct curl_httppost *formpost = NULL;
     struct curl_httppost *lastptr = NULL;
@@ -86,6 +92,8 @@ int main (int argc, char *argv[]) {
         /* Perform the request */
         res = curl_easy_perform(curl);
 
+printf("%s", response);
+
         /* Unescape json */
         removechar(response, "\\");
 
@@ -111,8 +119,8 @@ int main (int argc, char *argv[]) {
 
 
         /* Check for errors */
-        if(res != CURLE_OK)
-            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+        /*if(error == 1 && res != CURLE_OK)
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));*/
 
         free(real);
         curl_easy_cleanup(curl);

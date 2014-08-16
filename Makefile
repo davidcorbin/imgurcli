@@ -1,6 +1,6 @@
 SHELL = /bin/sh
 CC = gcc
-CFLAGS = -lcurl
+CFLAGS = -lcurl -Wall
 TARGET = imgur
 OBJECTS = imgur.c
 PREFIX = $(DESTDIR)/usr
@@ -10,7 +10,7 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJECTS)
 	
 install:
-	install imgur $(BINDIR)
+	install $(TARGET) $(BINDIR)
 
 uninstall:
 	-rm $(BINDIR)/$(TARGET)
